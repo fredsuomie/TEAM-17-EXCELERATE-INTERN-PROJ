@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learnsphere/screens/self_assessment_screen.dart';
+
 
 class ProgramDetailScreen extends StatelessWidget {
   const ProgramDetailScreen({super.key});
@@ -66,9 +68,17 @@ class ProgramDetailScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
               child: TextButton(
+                // Navigation to Self Assessment will be added later
                 onPressed: () {
-                  // Navigation to Self Assessment will be added later
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const SelfAssessmentScreen(),
+                    ),
+                  );
                 },
+
+
                 child: const Text(
                   'Start Self Assessment',
                   style: TextStyle(
