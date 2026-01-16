@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learnsphere/screens/reflection_screen.dart';
+
 
 class SelfAssessmentScreen extends StatefulWidget {
   const SelfAssessmentScreen({super.key});
@@ -70,7 +72,12 @@ class _SelfAssessmentScreenState extends State<SelfAssessmentScreen> {
                 onPressed: selectedOption == -1
                     ? null
                     : () {
-                  // Navigation to Reflection will be added later
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ReflectionScreen(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Submit Assessment',
