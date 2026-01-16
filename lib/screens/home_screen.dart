@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learnsphere/screens/program_list_screen.dart';
+import 'package:learnsphere/screens/reflection_screen.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,18 +36,39 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// FEATURE CARDS
-            _FeatureCard(
-              icon: Icons.quiz_outlined,
-              title: 'Self Assessment',
-              description: 'Test your understanding and confidence',
-              isDark: isDark,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ProgramListScreen(),
+                  ),
+                );
+              },
+              child: _FeatureCard(
+                icon: Icons.quiz_outlined,
+                title: 'Programs',
+                description: 'Browse learning programs and start assessment',
+                isDark: isDark,
+              ),
             ),
+
             const SizedBox(height: 16),
-            _FeatureCard(
-              icon: Icons.psychology_outlined,
-              title: 'Reflection',
-              description: 'Reflect on strengths and learning gaps',
-              isDark: isDark,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ReflectionScreen(),
+                  ),
+                );
+              },
+              child: _FeatureCard(
+                icon: Icons.psychology_outlined,
+                title: 'Reflection',
+                description: 'Reflect on strengths and learning gaps',
+                isDark: isDark,
+              ),
             ),
             const SizedBox(height: 16),
             _FeatureCard(
