@@ -24,7 +24,7 @@ class LearnSphereApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
       ),
-      home: const SplashScreen(),
+      home: const SplashScreen(), // ✅ Auth Guard Entry
     );
   }
 }
