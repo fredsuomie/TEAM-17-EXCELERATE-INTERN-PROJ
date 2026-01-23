@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:learnsphere/screens/login_screen.dart';
 import 'package:learnsphere/screens/program_list_screen.dart';
 import 'package:learnsphere/screens/reflection_screen.dart';
-
+import 'package:learnsphere/screens/progress_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  Future<void> _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+          (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +26,40 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('LearnSphere'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Logout'),
+                  content: const Text('Are you sure you want to logout?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Logout'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (confirm == true) {
+                _logout(context);
+              }
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// WELCOME
             Text(
               'Welcome 👋',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -32,10 +71,8 @@ class HomeScreen extends StatelessWidget {
               'Let’s improve your learning today',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-
             const SizedBox(height: 24),
 
-            /// FEATURE CARDS
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -52,8 +89,8 @@ class HomeScreen extends StatelessWidget {
                 isDark: isDark,
               ),
             ),
-
             const SizedBox(height: 16),
+
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -71,11 +108,22 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            _FeatureCard(
-              icon: Icons.trending_up_rounded,
-              title: 'Progress',
-              description: 'Track your learning growth over time',
-              isDark: isDark,
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ProgressScreen(),
+                  ),
+                );
+              },
+              child: _FeatureCard(
+                icon: Icons.trending_up_rounded,
+                title: 'Progress',
+                description: 'Track your learning growth over time',
+                isDark: isDark,
+              ),
             ),
           ],
         ),
@@ -84,7 +132,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-/// REUSABLE FEATURE CARD
 class _FeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -113,7 +160,8 @@ class _FeatureCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                color:
+                Theme.of(context).colorScheme.primary.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -129,7 +177,8 @@ class _FeatureCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style:
+                    Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),

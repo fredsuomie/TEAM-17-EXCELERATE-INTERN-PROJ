@@ -1,9 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learnsphere/screens/home_screen.dart';
+import 'package:learnsphere/screens/forgot_password_screen.dart';
+import 'package:learnsphere/screens/signup_screen.dart';
 
-
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _isLoading = false;
+
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter email and password')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? 'Login failed')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +94,7 @@ class LoginScreen extends StatelessWidget {
 
                   /// EMAIL
                   TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       prefixIcon: const Icon(Icons.email_outlined),
@@ -63,6 +108,7 @@ class LoginScreen extends StatelessWidget {
 
                   /// PASSWORD
                   TextField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -79,14 +125,21 @@ class LoginScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
                       child: const Text('Forgot Password?'),
                     ),
                   ),
 
                   const SizedBox(height: 20),
 
-                  /// LOGIN BUTTON (FIXED)
+                  /// LOGIN BUTTON
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -99,15 +152,10 @@ class LoginScreen extends StatelessWidget {
                         ),
                         elevation: 4,
                       ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomeScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text(
+                      onPressed: _isLoading ? null : _login,
+                      child: _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
                         'Login',
                         style: TextStyle(
                           fontSize: 18,
@@ -122,17 +170,27 @@ class LoginScreen extends StatelessWidget {
                   /// SIGN UP
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("Don't have an account? "),
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Color(0xFF5577F8),
-                          fontWeight: FontWeight.bold,
+                    children: [
+                      const Text("Don't have an account? "),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SignupScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Color(0xFF5577F8),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
