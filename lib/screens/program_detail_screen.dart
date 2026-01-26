@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:learnsphere/models/program.dart';
 import 'package:learnsphere/screens/self_assessment_screen.dart';
 
 
 class ProgramDetailScreen extends StatelessWidget {
-  const ProgramDetailScreen({super.key});
+  final Program program;
+
+  const ProgramDetailScreen({super.key, required this.program});
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +25,25 @@ class ProgramDetailScreen extends StatelessWidget {
           children: [
             /// PROGRAM TITLE
             Text(
-              'Flutter Basics',
+              program.title,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
 
+
             const SizedBox(height: 8),
 
             /// PROGRAM META
             Row(
-              children: const [
-                Icon(Icons.schedule, size: 18),
-                SizedBox(width: 6),
-                Text('Duration: 2 Weeks'),
-                SizedBox(width: 16),
-                Icon(Icons.bar_chart, size: 18),
-                SizedBox(width: 6),
-                Text('Level: Beginner'),
+              children: [
+                const Icon(Icons.schedule, size: 18),
+                const SizedBox(width: 6),
+                Text('Duration: ${program.duration}'),
+                const SizedBox(width: 16),
+                const Icon(Icons.bar_chart, size: 18),
+                const SizedBox(width: 6),
+                Text('Level: ${program.level}'),
               ],
             ),
 
@@ -53,7 +58,7 @@ class ProgramDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'This program introduces you to Flutter fundamentals including widgets, layouts, and basic state management.',
+              program.description,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
@@ -73,11 +78,10 @@ class ProgramDetailScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const SelfAssessmentScreen(),
+                      builder: (_) => SelfAssessmentScreen(program: program),
                     ),
                   );
                 },
-
 
                 child: const Text(
                   'Start Self Assessment',

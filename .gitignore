@@ -121,3 +121,4 @@ app.*.symbols
 # IDE files
 .idea/
 *.iml
+.env

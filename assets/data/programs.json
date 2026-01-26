@@ -1,0 +1,44 @@
+[
+  {
+    "id": "flutter_basics",
+    "title": "Flutter Basics",
+    "description": "Understand widgets, layouts, and state",
+    "level": "Beginner",
+    "duration": "2 Weeks"
+  },
+  {
+    "id": "dart_programming",
+    "title": "Dart Programming",
+    "description": "Learn Dart syntax, functions, and OOP concepts",
+    "level": "Beginner",
+    "duration": "1 Week"
+  },
+  {
+    "id": "state_management",
+    "title": "State Management",
+    "description": "Learn Provider and basic state management patterns",
+    "level": "Intermediate",
+    "duration": "2 Weeks"
+  },
+  {
+    "id": "data_structures",
+    "title": "Data Structures",
+    "description": "Learn arrays, stacks, queues, and linked lists",
+    "level": "Beginner",
+    "duration": "2 Weeks"
+  },
+  {
+    "id": "cloud_fundamentals",
+    "title": "Cloud Fundamentals",
+    "description": "Introduction to cloud computing and services",
+    "level": "Beginner",
+    "duration": "1 Week"
+  },
+  {
+    "id": "firebase_basics",
+    "title": "Firebase Basics",
+    "description": "Authentication, Firestore, and Firebase integration",
+    "level": "Intermediate",
+    "duration": "1 Week"
+  }
+]

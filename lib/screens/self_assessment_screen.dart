@@ -1,96 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:learnsphere/screens/reflection_screen.dart';
-
+import '../models/program.dart';
+import '../services/progress_service.dart';
+import 'reflection_screen.dart';
 
 class SelfAssessmentScreen extends StatefulWidget {
-  const SelfAssessmentScreen({super.key});
+  final Program program;
+  const SelfAssessmentScreen({super.key, required this.program});
 
   @override
   State<SelfAssessmentScreen> createState() => _SelfAssessmentScreenState();
 }
 
 class _SelfAssessmentScreenState extends State<SelfAssessmentScreen> {
-  int selectedOption = -1;
+  final _formKey = GlobalKey<FormState>();
+  String? selectedConfidence;
 
   @override
   Widget build(BuildContext context) {
-    final options = [
-      'Very Confident',
-      'Somewhat Confident',
-      'Neutral',
-      'Not Confident',
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Self Assessment'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// QUESTION
-            Text(
-              'How confident are you with Flutter basics?',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            /// OPTIONS
-            ...List.generate(options.length, (index) {
-              return Card(
-                elevation: 3,
-                margin: const EdgeInsets.only(bottom: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+      appBar: AppBar(title: const Text('Self Assessment')),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'How confident are you with ${widget.program.title}?',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                child: RadioListTile<int>(
-                  value: index,
-                  groupValue: selectedOption,
-                  title: Text(options[index]),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedOption = value!;
-                    });
+                const SizedBox(height: 16),
+
+                _option('Very Confident'),
+                _option('Somewhat Confident'),
+                _option('Neutral'),
+                _option('Not Confident'),
+
+                const SizedBox(height: 24),
+
+                ElevatedButton(
+                  onPressed: () {
+                    if (selectedConfidence == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select a confidence level'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    ProgressService.addScore(
+                      widget.program.id,
+                      selectedConfidence!,
+                    );
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ReflectionScreen(
+                          program: widget.program,
+                          confidence: selectedConfidence!,
+                        ),
+                      ),
+                    );
                   },
+                  child: const Text('Submit Assessment'),
                 ),
-              );
-            }),
-
-            const Spacer(),
-
-            /// SUBMIT BUTTON
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: selectedOption == -1
-                    ? null
-                    : () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const ReflectionScreen(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Submit Assessment',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _option(String value) {
+    return RadioListTile<String>(
+      value: value,
+      groupValue: selectedConfidence,
+      title: Text(value),
+      onChanged: (val) {
+        setState(() {
+          selectedConfidence = val;
+        });
+      },
     );
   }
 }

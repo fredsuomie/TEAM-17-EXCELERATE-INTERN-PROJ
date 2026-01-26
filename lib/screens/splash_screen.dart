@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'onboarding_screen.dart';
+import 'home_screen.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,14 +16,30 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-        );
-      }
-    });
+    _handleNavigation();
+  }
+
+  Future<void> _handleNavigation() async {
+    // Splash delay for branding
+    await Future.delayed(const Duration(seconds: 3));
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (!mounted) return;
+
+    if (user != null) {
+      // User already logged in
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      // First-time or logged-out user
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    }
   }
 
   @override
@@ -31,14 +50,17 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            // App Logo
+
+            /// App Logo
             Image.asset(
-              'assets/images/logo.png', // Make sure this path is correct
+              'assets/images/logo.png',
               width: 120,
               height: 120,
             ),
+
             const SizedBox(height: 16),
-            // Motto
+
+            /// Motto
             Text(
               'Reflect • Assess • Grow',
               style: TextStyle(
@@ -46,8 +68,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Theme.of(context).hintColor,
               ),
             ),
+
             const Spacer(),
-            // App Name
+
+            /// App Name
             const Padding(
               padding: EdgeInsets.only(bottom: 32.0),
               child: Text(
