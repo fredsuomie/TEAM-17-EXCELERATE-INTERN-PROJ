@@ -1,133 +1,87 @@
 import 'package:flutter/material.dart';
+import '../models/program.dart';
+import 'progress_screen.dart';
 
-class ReflectionScreen extends StatelessWidget {
-  const ReflectionScreen({super.key});
+class ReflectionScreen extends StatefulWidget {
+  final Program program;
+  final String confidence;
+
+  const ReflectionScreen({
+    super.key,
+    required this.program,
+    required this.confidence,
+  });
+
+  @override
+  State<ReflectionScreen> createState() => _ReflectionScreenState();
+}
+
+class _ReflectionScreenState extends State<ReflectionScreen> {
+  final _understoodController = TextEditingController();
+  final _improveController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Reflection'),
-        centerTitle: true,
-      ),
-      body: Padding(
+      appBar: AppBar(title: const Text('Reflection')),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// HEADER
             Text(
-              'Reflect on Your Learning',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              'AI Feedback',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            Text(
-              'Take a moment to think about your performance.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-
+            Text(_feedbackText(widget.confidence)),
             const SizedBox(height: 24),
 
-            /// SUMMARY CARD
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Assessment Summary',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Text('• You showed moderate confidence'),
-                    Text('• Some concepts need revision'),
-                    Text('• You are making progress'),
-                  ],
-                ),
+            TextField(
+              controller: _understoodController,
+              decoration: const InputDecoration(
+                labelText: 'What did you understand well?',
+                border: OutlineInputBorder(),
               ),
             ),
+            const SizedBox(height: 16),
 
+            TextField(
+              controller: _improveController,
+              decoration: const InputDecoration(
+                labelText: 'What do you need to improve?',
+                border: OutlineInputBorder(),
+              ),
+            ),
             const SizedBox(height: 24),
 
-            /// REFLECTION PROMPTS
-            Text(
-              'Reflection Questions',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            _ReflectionPrompt(
-              text: 'What did you understand well?',
-              isDark: isDark,
-            ),
-            const SizedBox(height: 12),
-            _ReflectionPrompt(
-              text: 'What topics should you revise?',
-              isDark: isDark,
-            ),
-
-            const Spacer(),
-
-            /// CONTINUE BUTTON
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigation to Progress screen will be added later
-                },
-                child: const Text(
-                  'Continue',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ProgressScreen(),
                   ),
-                ),
-              ),
+                );
+              },
+              child: const Text('Submit Reflection'),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-/// REFLECTION INPUT BOX
-class _ReflectionPrompt extends StatelessWidget {
-  final String text;
-  final bool isDark;
-
-  const _ReflectionPrompt({
-    required this.text,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      maxLines: 3,
-      decoration: InputDecoration(
-        labelText: text,
-        filled: true,
-        fillColor: isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade100,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    );
+  String _feedbackText(String confidence) {
+    switch (confidence) {
+      case 'Very Confident':
+        return 'Great job! You show strong understanding.';
+      case 'Somewhat Confident':
+        return 'You are doing well but could benefit from revision.';
+      case 'Neutral':
+        return 'Consider revisiting key concepts.';
+      default:
+        return 'Focus on fundamentals and practice more.';
+    }
   }
 }

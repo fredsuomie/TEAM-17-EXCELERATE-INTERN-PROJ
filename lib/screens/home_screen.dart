@@ -93,10 +93,9 @@ class HomeScreen extends StatelessWidget {
 
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ReflectionScreen(),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Complete a self-assessment to view reflection'),
                   ),
                 );
               },
