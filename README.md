@@ -1,81 +1,135 @@
-# 📘 LearnSphere
+📘 LearnSphere
+Reflect • Assess • Grow
 
-### Reflect • Assess • Grow
+LearnSphere is a Flutter-based self-assessment and reflection mobile application designed to help learners evaluate their understanding, reflect on learning experiences, and track confidence-based progress over time.
 
-LearnSphere is a **Self‑Assessment & Reflection educational mobile application** built with **Flutter**. The app helps students evaluate their understanding, reflect on daily learning experiences, and track personal growth over time.
+This project was developed as part of a Mobile Application Development Internship, following a team-based GitHub workflow and real-world app architecture practices.
 
-This project is developed as part of a **Mobile Application Development Internship** using a **team‑based GitHub workflow**.
+🎯 Project Purpose
 
----
+Most learning apps focus only on content delivery. LearnSphere focuses on metacognition — helping learners understand how well they are learning.
 
-## 🎯 Project Purpose
+The app enables users to:
 
-Traditional educational apps focus mainly on content delivery. LearnSphere takes a different approach by encouraging **metacognition** — helping learners think about *how* they learn.
+Perform confidence-based self-assessments
 
-The app enables students to:
+Reflect on learning challenges and strengths
 
-* Perform self‑assessments
-* Reflect on learning challenges
-* Track confidence and progress
-* Build consistent learning habits
+Receive AI-assisted feedback
 
----
+Track learning progress visually
 
-## ✨ Core Features
+Build consistent reflection habits
 
-### 🔹 Self‑Assessment Mode (AI‑Inspired)
+✨ Core Features
+🔹 Program-Based Learning Flow
 
-* Dynamically generated reflection questions
-* Confidence rating scale (1–5)
-* Topic‑based assessment
+Users select a learning program
 
-> ⚠️ Note: The current version uses **lightweight logic and predefined templates** to simulate AI behavior. Future versions can integrate external AI APIs for full automation.
+Progress is tracked per program
 
-### 🔹 Reflection Journal
+Reflection and progress are locked until assessment completion
 
-* Guided reflection prompts
-* Daily or weekly entries
-* Text‑based journaling
+🔹 Self-Assessment (AI-Assisted Logic)
 
-### 🔹 Learning Dashboard
+Confidence rating scale (Very Confident → Not Confident)
 
-* Today’s assessment summary
-* Quick access to reflection
-* Progress snapshot
+Topic-based assessment
 
-### 🔹 Progress Overview
+Dynamic feedback generation based on confidence score
 
-* Confidence trends
-* Completed reflections
-* Visual progress indicators
+ℹ️ AI Usage Note
+The current implementation uses rule-based and API-assisted logic to simulate AI behavior.
+The app does not train models, aligning with internship requirements.
 
----
+🔹 Reflection Journal
 
-## 🧭 User Flow
+Guided reflection questions
 
-```
-Login → Dashboard → Self‑Assessment → Reflection → Progress Overview
-```
+User-written reflections
 
----
+Validation to ensure meaningful input
 
-## 🖼️ Wireframes
+🔹 Progress Overview
 
-High‑fidelity, colored wireframes were designed to visualize the application layout and user journey before development.
+Confidence scoring system
 
-Screens include:
+Progress percentage per program
 
-1. Login / Signup
-2. Learning Dashboard
-3. Self‑Assessment Screen
-4. Reflection Journal Screen
-5. Progress Overview Screen
+Visual indicators of learning growth
 
----
+🧭 Application Flow
+Login 
+  → Program List 
+    → Self-Assessment 
+      → Reflection 
+        → Progress Overview
 
-## 🛠️ Tech Stack
 
-* **Flutter** – Cross‑platform mobile development
-* **Dart** – Programming language
-* **Git & GitHub** – Version control & collaboration
-* **Figma / Design tools** – Wireframing
+Reflection and Progress screens remain locked until the user completes a self-assessment.
+
+🧪 Forms & Validation
+
+The app includes functional forms with validation:
+
+Authentication inputs
+
+Self-assessment submission
+
+Reflection text inputs
+
+Required field checks and user feedback
+
+🛠️ Tech Stack
+
+Flutter – Cross-platform mobile development
+
+Dart – Programming language
+
+Firebase Authentication – User authentication
+
+Mock JSON / Services – Program data handling
+
+AI-assisted logic – Feedback & progression
+
+Git & GitHub – Version control and collaboration
+
+🖼️ UI & Wireframes
+
+High-fidelity wireframes were designed to define the user experience before development.
+
+Key Screens:
+
+Login / Signup
+
+Dashboard
+
+Program Listing
+
+Self-Assessment
+
+Reflection Journal
+
+Progress Overview
+
+▶️ Demo
+
+A short demo video showcases:
+
+Program selection
+
+Self-assessment submission
+
+AI-assisted feedback
+
+Reflection flow
+
+Progress tracking
+
+🚀 Setup Instructions
+git clone <repository-url>
+flutter pub get
+flutter run
+
+
+API keys are secured using environment variables and are not committed to the repository.
